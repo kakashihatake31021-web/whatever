@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TriGuide AI — One Chatbot. Three Domains. Open Platform.</title>
+  <meta name="description" content="TriGuide AI is a next-generation developer copilot powered by Google Gemini API. Master coding concepts, diagnose and fix bugs with visual diffs, and generate production-ready architectures.">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/domains.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-active-domain="learn">
+
+  <!-- Background Animated Mesh -->
+  <div class="bg-mesh"></div>
+
+  <div id="app-container">
+    <!-- Application Top Navigation Bar -->
+    <header class="app-header">
+      <div class="brand-section">
+        <div class="brand-logo" id="header-logo">Δ</div>
+        <div class="brand-info">
+          <h1>TriGuide <span class="tagline-accent">AI</span></h1>
+          <p class="brand-tagline">One Chatbot. Three Domains. Open Platform.</p>
+        </div>
+      </div>
+
+      <!-- Domain Navigation Pills -->
+      <nav class="domain-nav" aria-label="Domain Selector">
+        <button class="domain-pill active" data-domain="learn" title="Domain 1: Learn Concepts & Syntax">
+          <span class="pill-dot"></span>
+          <span>🎓 Learn</span>
+        </button>
+        <button class="domain-pill" data-domain="debug" title="Domain 2: Detect Bugs & Auto-Fix">
+          <span class="pill-dot"></span>
+          <span>🛠️ Debug & Fix</span>
+        </button>
+        <button class="domain-pill" data-domain="build" title="Domain 3: Practice Arena & Architecture">
+          <span class="pill-dot"></span>
+          <span>🚀 Practice & Build</span>
+        </button>
+        <button class="domain-pill" data-domain="unified" title="Tri-Domain Unified Assistant">
+          <span class="pill-dot"></span>
+          <span>✨ Omniverse</span>
+        </button>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <div id="mode-status-badge" class="badge-mode" title="Current Engine Mode">
+          <span class="status-indicator"></span>
+          <span>Demo Simulator Mode</span>
+        </div>
+
+        <button id="btn-export" class="btn-icon" title="Export Chat as Markdown">
+          <span>📥</span>
+        </button>
+        <button id="btn-clear-chat" class="btn-icon" title="Clear Conversation">
+          <span>🗑️</span>
+        </button>
+        <button id="btn-settings" class="btn-icon" title="Gemini API & Platform Settings">
+          <span>⚙️</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Body Container -->
+    <main class="app-body">
+      <!-- Left Sidebar -->
+      <aside class="app-sidebar">
+        <!-- Domains Selector Section -->
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Three Domains</div>
+          
+          <div class="domain-card active" data-domain="learn">
+            <div class="domain-card-icon">🎓</div>
+            <div class="domain-card-info">
+              <div class="domain-card-title">1. Code Mentor</div>
+              <div class="domain-card-desc">Syntax guides, mental models & ELI5 tutorials</div>
+            </div>
+          </div>
+
+          <div class="domain-card" data-domain="debug">
+            <div class="domain-card-icon">🛠️</div>
+            <div class="domain-card-info">
+              <div class="domain-card-title">2. Bug Doctor</div>
+              <div class="domain-card-desc">Root-cause diagnostics, line analysis & diff fixes</div>
+            </div>
+          </div>
+
+          <div class="domain-card" data-domain="build">
+            <div class="domain-card-icon">🚀</div>
+            <div class="domain-card-info">
+              <div class="domain-card-title">3. Practice Arena</div>
+              <div class="domain-card-desc">DSA challenges, API boilerplates & architecture</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Target Programming Language Selector -->
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Target Language</div>
+          <select id="global-lang-select" class="lang-select-box" aria-label="Select Target Language">
+            <!-- Dynamically populated -->
+          </select>
+        </div>
+
+        <!-- Adaptive Learning Level Selector -->
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Explanation Depth</div>
+          <div class="level-toggle-group">
+            <button class="level-btn active" data-level="beginner" title="Simple analogies, ELI5, zero jargon">Beginner</button>
+            <button class="level-btn" data-level="intermediate" title="Best practices & common idioms">Mid-Level</button>
+            <button class="level-btn" data-level="senior" title="Memory, runtime complexity & trade-offs">Senior</button>
+          </div>
+        </div>
+
+        <!-- Quick Inspiration & Prompt Templates -->
+        <div class="sidebar-section" style="flex: 1;">
+          <div class="sidebar-heading">Quick Prompts</div>
+          <div id="quick-prompts-list" class="quick-prompts-list">
+            <!-- Dynamically populated based on active domain -->
+          </div>
+        </div>
+
+        <!-- Hackathon & Platform Info -->
+        <div class="sidebar-section" style="border-bottom: none; background: rgba(0,0,0,0.2);">
+          <div style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">
+            <strong style="color: var(--text-secondary);">TriGuide Open Platform</strong><br>
+            Powered by Google Gemini 1.5 & 2.0 API. Built for developer productivity.
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Central Workspace -->
+      <section class="workspace-container">
+        <!-- Domain Hero Banner -->
+        <div class="domain-banner">
+          <div class="banner-left">
+            <div class="banner-icon-box" id="domain-banner-icon">🎓</div>
+            <div>
+              <div class="banner-title" id="domain-banner-title">Code Mentor & Concepts</div>
+              <div class="banner-subtitle" id="domain-banner-subtitle">Learn languages, syntax, and complex CS concepts effortlessly</div>
+            </div>
+          </div>
+
+          <div class="banner-actions">
+            <!-- View Mode Switcher -->
+            <div class="view-mode-toggle">
+              <button id="view-chat-btn" class="view-mode-btn active" title="Interactive Chat Mode">
+                <span>💬 Chat View</span>
+              </button>
+              <button id="view-diff-btn" class="view-mode-btn" title="Side-by-Side Code Doctor & Diff Lab">
+                <span>⚡ Code Doctor / Diff Lab</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- View 1: Interactive Chat Workspace -->
+        <div id="chat-workspace" class="chat-scroll-container">
+          <div class="messages-list" id="messages-list">
+            <!-- Welcome Hero Screen -->
+            <div class="welcome-hero" id="welcome-hero">
+              <div class="welcome-logo-badge">Δ</div>
+              <h2>Welcome to TriGuide AI</h2>
+              <p>The tri-domain developer copilot powered by Google Gemini. Choose a domain below or ask any coding question to begin.</p>
+
+              <div class="feature-cards-grid">
+                <div class="feature-card" data-domain-target="learn" data-prompt="Explain Recursion in Python with a real-life analogy and simple code">
+                  <div class="feature-card-icon">🎓</div>
+                  <h3>Domain 1: Learn</h3>
+                  <p>Master syntax, CS fundamentals, memory concepts, and language paradigms.</p>
+                </div>
+
+                <div class="feature-card" data-domain-target="debug" data-prompt="debug: typeerror">
+                  <div class="feature-card-icon">🛠️</div>
+                  <h3>Domain 2: Debug</h3>
+                  <p>Paste broken code, get root-cause diagnostics, and view side-by-side visual diffs.</p>
+                </div>
+
+                <div class="feature-card" data-domain-target="build" data-prompt="Solve Two Sum problem in Python with optimal O(n) time and O(n) space hash map">
+                  <div class="feature-card-icon">🚀</div>
+                  <h3>Domain 3: Build</h3>
+                  <p>Generate full-stack boilerplates, solve DSA challenges, and architect projects.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- View 2: Code Doctor & Visual Diff Laboratory -->
+        <div id="diff-workspace" class="diff-lab-container" style="display: none;">
+          <!-- Left Pane: Input Buggy Code -->
+          <div class="diff-pane">
+            <div class="pane-header">
+              <span class="pane-title buggy">
+                <span>🔴</span> Buggy / Problematic Code
+              </span>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <select id="diff-sample-select" class="lang-select-box" style="width: auto; padding: 4px 8px; font-size: 11px;">
+                  <option value="typeerror">Sample: JS TypeError</option>
+                  <option value="indexerror">Sample: Python IndexError</option>
+                  <option value="memory_leak">Sample: C++ Memory Leak</option>
+                </select>
+                <select id="diff-lang-select" class="lang-select-box" style="width: auto; padding: 4px 8px; font-size: 11px;">
+                  <option value="javascript">JavaScript</option>
+                  <option value="python">Python</option>
+                  <option value="cpp">C++</option>
+                  <option value="java">Java</option>
+                  <option value="rust">Rust</option>
+                </select>
+                <button id="btn-run-diff" class="btn-primary" style="padding: 4px 12px; font-size: 12px;">
+                  <span>Diagnose & Fix ⚡</span>
+                </button>
+              </div>
+            </div>
+            <textarea id="diff-buggy-code" class="code-editor-textarea" placeholder="Paste your broken or buggy code here..."></textarea>
+          </div>
+
+          <!-- Right Pane: Diagnosis & Visual Diff -->
+          <div class="diff-pane">
+            <div class="pane-header">
+              <span class="pane-title fixed">
+                <span>🟢</span> Visual Diff & Clean Fix
+              </span>
+              <button id="btn-copy-fixed" class="copy-btn">
+                📋 Copy Clean Code
+              </button>
+            </div>
+
+            <!-- Diagnosis Summary Alert -->
+            <div id="diff-diagnosis-card" class="diagnosis-card">
+              <div class="diagnosis-title">
+                <span>💡</span> AI Root Cause & Fix Explanation
+              </div>
+              <div id="diff-diagnosis-text" class="diagnosis-text">
+                Click "Diagnose & Fix" or load a sample on the left to view deep AST and logic analysis.
+              </div>
+            </div>
+
+            <!-- Diff Output Stream -->
+            <div id="diff-view-output" class="diff-view-output">
+              <!-- Rendered line-by-line diff -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Input Footer Bar -->
+        <footer class="chat-input-area">
+          <div class="input-box-wrapper">
+            <div class="input-top-bar">
+              <div id="active-mode-small" class="active-mode-badge-small">
+                <span>🎓</span> <span>Learn Mode</span>
+              </div>
+              <div style="color: var(--text-muted); font-size: 11px;">
+                Press <strong>Enter</strong> to send, <strong>Shift+Enter</strong> for new line
+              </div>
+            </div>
+
+            <div class="input-row">
+              <textarea 
+                id="chat-textarea" 
+                class="chat-textarea" 
+                rows="1" 
+                placeholder="Ask a question, paste code to debug, or request a project architecture..."
+              ></textarea>
+              <div class="input-actions">
+                <button id="btn-voice" class="btn-icon" title="Voice Input (Speech to Text)">
+                  <span>🎙️</span>
+                </button>
+                <button id="btn-send" class="btn-send" title="Send Message">
+                  <span>➤</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </section>
+    </main>
+  </div>
+
+  <!-- Settings & API Key Modal -->
+  <div id="settings-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>⚙️</span> TriGuide AI Platform Settings
+        </div>
+        <button id="modal-close" class="btn-icon">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Google Gemini API Key -->
+        <div class="form-group">
+          <label for="setting-api-key">Google Gemini API Key</label>
+          <input 
+            type="password" 
+            id="setting-api-key" 
+            class="form-input" 
+            placeholder="AIzaSy..." 
+            autocomplete="off"
+          >
+          <div class="form-hint">
+            Get your free Gemini API Key from <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--info);">Google AI Studio</a>. Keys are stored locally in your browser only.
+          </div>
+        </div>
+
+        <!-- Model Selection -->
+        <div class="form-group">
+          <label for="setting-model">Gemini Model</label>
+          <select id="setting-model" class="lang-select-box">
+            <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (Recommended - Fast & Free Quota)</option>
+            <option value="gemini-flash-latest">Gemini Flash Latest</option>
+            <option value="gemini-3.6-flash">Gemini 3.6 Flash</option>
+          </select>
+        </div>
+
+        <!-- Temperature Slider -->
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between;">
+            <label for="setting-temp">Temperature (Creativity vs Determinism)</label>
+            <span id="val-temp" style="font-family: var(--font-mono); color: var(--info); font-size: 12px;">0.7</span>
+          </div>
+          <input type="range" id="setting-temp" min="0.0" max="1.0" step="0.1" value="0.7" style="accent-color: var(--domain-learn);">
+        </div>
+
+        <!-- Smart Demo Mode Toggle -->
+        <div class="form-group" style="flex-direction: row; align-items: center; justify-content: space-between; padding-top: 8px;">
+          <div>
+            <div style="font-size: 13px; font-weight: 600; color: #fff;">Smart Demo Simulator Mode</div>
+            <div class="form-hint">Enable pre-loaded scenarios for instant judging without an API key.</div>
+          </div>
+          <input type="checkbox" id="setting-demo-mode" style="transform: scale(1.3); cursor: pointer; accent-color: var(--domain-build);">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="btn-save-settings" class="btn-primary">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Application Entry Point -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

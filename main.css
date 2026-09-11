@@ -1,0 +1,398 @@
+/* ==========================================================================
+   TriGuide AI - Main Design System & Variables
+   Theme: Deep Space Dark Glassmorphism with Cyberpunk Accents
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Core Backgrounds */
+  --bg-space: #07090e;
+  --bg-surface: #0e131f;
+  --bg-card: rgba(18, 24, 38, 0.75);
+  --bg-card-hover: rgba(28, 38, 60, 0.85);
+  --bg-glass: rgba(15, 23, 42, 0.65);
+  --bg-input: rgba(11, 16, 28, 0.85);
+  
+  /* Borders & Glassmorphism */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(99, 102, 241, 0.5);
+  --border-card: rgba(255, 255, 255, 0.12);
+  --glass-blur: blur(16px);
+  --glass-blur-sm: blur(8px);
+  
+  /* Text Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-glow: rgba(255, 255, 255, 0.95);
+
+  /* Domain 1: Learn & Master (Electric Indigo / Violet) */
+  --domain-learn: #6366f1;
+  --domain-learn-glow: rgba(99, 102, 241, 0.35);
+  --domain-learn-gradient: linear-gradient(135deg, #6366f1, #a855f7);
+  --domain-learn-border: rgba(129, 140, 248, 0.4);
+
+  /* Domain 2: Debug & Fix (Amber Flame / Rose) */
+  --domain-debug: #f59e0b;
+  --domain-debug-glow: rgba(245, 158, 11, 0.35);
+  --domain-debug-gradient: linear-gradient(135deg, #f59e0b, #ef4444);
+  --domain-debug-border: rgba(251, 191, 36, 0.4);
+
+  /* Domain 3: Practice & Build (Emerald Matrix / Cyan) */
+  --domain-build: #10b981;
+  --domain-build-glow: rgba(16, 185, 129, 0.35);
+  --domain-build-gradient: linear-gradient(135deg, #10b981, #06b6d4);
+  --domain-build-border: rgba(52, 211, 153, 0.4);
+
+  /* Status Colors */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #38bdf8;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Elevations & Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.65);
+  --shadow-glow: 0 0 25px var(--active-domain-glow, var(--domain-learn-glow));
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-space);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Background Animated Gradient Mesh */
+.bg-mesh {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: 
+    radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 85% 15%, rgba(245, 158, 11, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 65%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+  filter: blur(40px);
+  animation: meshPulse 12s ease-in-out infinite alternate;
+}
+
+@keyframes meshPulse {
+  0% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+  50% { transform: scale(1.05) rotate(1deg); opacity: 1; }
+  100% { transform: scale(0.98) rotate(-1deg); opacity: 0.85; }
+}
+
+/* Main Application Shell */
+#app-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Header & Top Bar */
+.app-header {
+  height: 64px;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--border-subtle);
+  z-index: 10;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--domain-learn-gradient);
+  box-shadow: 0 0 16px var(--domain-learn-glow);
+  color: #fff;
+  font-weight: 800;
+  font-size: 18px;
+  transition: var(--transition-normal);
+}
+
+.brand-info h1 {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-tagline {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.tagline-accent {
+  background: linear-gradient(90deg, #818cf8, #fbbf24, #34d399);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+}
+
+/* Domain Navigation Switcher Pills */
+.domain-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+}
+
+.domain-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.domain-pill:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.domain-pill .pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transition: var(--transition-fast);
+}
+
+.domain-pill[data-domain="learn"] .pill-dot { background: var(--domain-learn); }
+.domain-pill[data-domain="debug"] .pill-dot { background: var(--domain-debug); }
+.domain-pill[data-domain="build"] .pill-dot { background: var(--domain-build); }
+.domain-pill[data-domain="unified"] .pill-dot {
+  background: linear-gradient(135deg, var(--domain-learn), var(--domain-debug), var(--domain-build));
+}
+
+.domain-pill.active {
+  color: #fff;
+  background: var(--bg-surface);
+  border-color: var(--border-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.domain-pill.active[data-domain="learn"] {
+  border-color: var(--domain-learn-border);
+  box-shadow: 0 0 12px var(--domain-learn-glow);
+}
+.domain-pill.active[data-domain="debug"] {
+  border-color: var(--domain-debug-border);
+  box-shadow: 0 0 12px var(--domain-debug-glow);
+}
+.domain-pill.active[data-domain="build"] {
+  border-color: var(--domain-build-border);
+  box-shadow: 0 0 12px var(--domain-build-glow);
+}
+
+/* Header Actions & Controls */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-icon:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--border-card);
+}
+
+.badge-mode {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.badge-mode.live {
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.status-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* App Main Body Layout */
+.app-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Left Sidebar - Quick Actions, Templates & Roadmaps */
+.app-sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  transition: var(--transition-normal);
+  z-index: 5;
+}
+
+.sidebar-section {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.sidebar-heading {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Domain Selector Cards in Sidebar */
+.domain-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: var(--transition-fast);
+}
+
+.domain-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-subtle);
+}
+
+.domain-card.active {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--border-card);
+}
+
+.domain-card-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.domain-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.domain-card-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
